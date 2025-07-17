@@ -1,0 +1,44 @@
+[
+    {
+        "title": "CTF Auto-Solver",
+        "icon": "🎯",
+        "description": "Automated capture-the-flag challenge solver using machine learning and pattern recognition. Supports web, crypto, and binary exploitation categories.",
+        "technologies": ["Python", "TensorFlow", "Flask", "Docker"],
+        "github": "https://github.com/azizbenabdallah/ctf-auto-solver"
+    },
+    {
+        "title": "DNS Dashboard",
+        "icon": "🌐",
+        "description": "Real-time DNS monitoring and analytics dashboard with geographic visualization and performance metrics for multiple DNS providers.",
+        "technologies": ["Go", "Redis", "Vue.js", "Chart.js"],
+        "github": "https://github.com/azizbenabdallah/dns-dashboard"
+    },
+    {
+        "title": "YOLOv5-K8s",
+        "icon": "🤖",
+        "description": "Scalable YOLOv5 object detection service deployed on Kubernetes with auto-scaling, load balancing, and real-time inference API.",
+        "technologies": ["Python", "PyTorch", "Kubernetes", "FastAPI"],
+        "github": "https://github.com/azizbenabdallah/yolov5-k8s"
+    },
+    {
+        "title": "Network Security Scanner",
+        "icon": "🔒",
+        "description": "Comprehensive network security assessment tool with vulnerability scanning, port analysis, and automated reporting capabilities.",
+        "technologies": ["Python", "Nmap", "SQLite", "React"],
+        "github": "https://github.com/azizbenabdallah/network-scanner"
+    },
+    {
+        "title": "Blockchain Analytics",
+        "icon": "⛓️",
+        "description": "Cryptocurrency transaction analysis platform with real-time monitoring, suspicious activity detection, and compliance reporting.",
+        "technologies": ["Node.js", "MongoDB", "Web3.js", "D3.js"],
+        "github": "https://github.com/azizbenabdallah/blockchain-analytics"
+    },
+    {
+        "title": "IoT Device Manager",
+        "icon": "📱",
+        "description": "Centralized IoT device management system with remote monitoring, firmware updates, and security policy enforcement.",
+        "technologies": ["Rust", "MQTT", "InfluxDB", "Angular"],
+        "github": "https://github.com/azizbenabdallah/iot-manager"
+    }
+]

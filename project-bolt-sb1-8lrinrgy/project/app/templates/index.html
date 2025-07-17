@@ -1,0 +1,191 @@
+<!DOCTYPE html>
+<html lang="en" class="dark">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Aziz's Home Lab ⚡</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script src="https://cdn.socket.io/4.7.2/socket.io.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/animejs/3.2.1/anime.min.js"></script>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;600;700&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <script>
+        tailwind.config = {
+            darkMode: 'class',
+            theme: {
+                extend: {
+                    colors: {
+                        'neon': '#38bdf8',
+                        'neon-dark': '#0284c7',
+                        'dark-bg': '#0f172a',
+                        'dark-card': '#1e293b',
+                        'dark-border': '#334155'
+                    },
+                    fontFamily: {
+                        'mono': ['JetBrains Mono', 'monospace'],
+                        'sans': ['Inter', 'sans-serif']
+                    }
+                }
+            }
+        }
+    </script>
+</head>
+<body class="bg-dark-bg text-white font-sans">
+    <!-- Header -->
+    <header class="border-b border-dark-border bg-dark-card/50 backdrop-blur-sm sticky top-0 z-50">
+        <div class="container mx-auto px-4 py-6">
+            <div class="flex items-center justify-between">
+                <div class="flex items-center space-x-4">
+                    <div class="w-12 h-12 rounded-full bg-gradient-to-br from-neon to-neon-dark flex items-center justify-center">
+                        <span class="text-xl font-bold">A</span>
+                    </div>
+                    <div>
+                        <h1 class="text-2xl font-mono font-bold text-neon">Aziz's Home Lab</h1>
+                        <p class="text-gray-400 text-sm">Self-hosted services & monitoring ⚡</p>
+                    </div>
+                </div>
+                <div class="flex items-center space-x-4">
+                    <div class="hidden md:flex items-center space-x-2 text-sm text-gray-400">
+                        <div class="w-2 h-2 bg-green-500 rounded-full animate-pulse"></div>
+                        <span>Live</span>
+                    </div>
+                    <div id="weather-info" class="hidden md:block text-sm text-gray-400">
+                        <span id="weather-temp">--°C</span>
+                        <span id="weather-desc">Loading...</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <!-- Main Content -->
+    <main class="container mx-auto px-4 py-8">
+        <!-- Live Services Section -->
+        <section class="mb-12">
+            <h2 class="text-xl font-mono font-semibold mb-6 text-neon">🚀 Live Services</h2>
+            <div id="services-grid" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                <!-- Services will be loaded here -->
+            </div>
+        </section>
+
+        <!-- System Stats Section -->
+        <section class="mb-12">
+            <h2 class="text-xl font-mono font-semibold mb-6 text-neon">📊 System Statistics</h2>
+            <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
+                <!-- CPU Chart -->
+                <div class="bg-dark-card border border-dark-border rounded-2xl p-6">
+                    <h3 class="text-lg font-mono font-medium mb-4">CPU Usage</h3>
+                    <canvas id="cpuChart" width="400" height="200"></canvas>
+                </div>
+                
+                <!-- Memory Chart -->
+                <div class="bg-dark-card border border-dark-border rounded-2xl p-6">
+                    <h3 class="text-lg font-mono font-medium mb-4">Memory Usage</h3>
+                    <canvas id="memoryChart" width="400" height="200"></canvas>
+                </div>
+                
+                <!-- Network Chart -->
+                <div class="bg-dark-card border border-dark-border rounded-2xl p-6">
+                    <h3 class="text-lg font-mono font-medium mb-4">Network Activity</h3>
+                    <canvas id="networkChart" width="400" height="200"></canvas>
+                </div>
+                
+                <!-- Disk Usage -->
+                <div class="bg-dark-card border border-dark-border rounded-2xl p-6">
+                    <h3 class="text-lg font-mono font-medium mb-4">Disk Usage</h3>
+                    <div class="space-y-4">
+                        <div class="flex items-center justify-between">
+                            <span class="text-sm text-gray-400">Root (/)</span>
+                            <span id="disk-percent" class="text-sm font-mono">0%</span>
+                        </div>
+                        <div class="w-full bg-gray-700 rounded-full h-2">
+                            <div id="disk-bar" class="bg-gradient-to-r from-neon to-neon-dark h-2 rounded-full transition-all duration-300" style="width: 0%"></div>
+                        </div>
+                        <div class="flex justify-between text-xs text-gray-500">
+                            <span id="disk-used">0 GB</span>
+                            <span id="disk-total">0 GB</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Projects Section -->
+        <section class="mb-12">
+            <h2 class="text-xl font-mono font-semibold mb-6 text-neon">🛠️ Projects</h2>
+            <div id="projects-grid" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                <!-- Projects will be loaded here -->
+            </div>
+        </section>
+
+        <!-- Visitors Section -->
+        <section class="mb-12">
+            <h2 class="text-xl font-mono font-semibold mb-6 text-neon">👥 Visitors</h2>
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+                <div class="bg-dark-card border border-dark-border rounded-2xl p-6">
+                    <div class="flex items-center justify-between">
+                        <div>
+                            <p class="text-sm text-gray-400">Total Visits</p>
+                            <p id="total-visits" class="text-2xl font-mono font-bold text-neon">0</p>
+                        </div>
+                        <div class="text-3xl">📈</div>
+                    </div>
+                </div>
+                
+                <div class="bg-dark-card border border-dark-border rounded-2xl p-6">
+                    <div class="flex items-center justify-between">
+                        <div>
+                            <p class="text-sm text-gray-400">Unique Visitors</p>
+                            <p id="unique-visitors" class="text-2xl font-mono font-bold text-neon">0</p>
+                        </div>
+                        <div class="text-3xl">👤</div>
+                    </div>
+                </div>
+                
+                <div class="bg-dark-card border border-dark-border rounded-2xl p-6">
+                    <div class="flex items-center justify-between">
+                        <div>
+                            <p class="text-sm text-gray-400">Last 24h</p>
+                            <p id="recent-visits" class="text-2xl font-mono font-bold text-neon">0</p>
+                        </div>
+                        <div class="text-3xl">🔥</div>
+                    </div>
+                </div>
+                
+                <div class="bg-dark-card border border-dark-border rounded-2xl p-6">
+                    <div class="flex items-center justify-between">
+                        <div>
+                            <p class="text-sm text-gray-400">Last Visitor</p>
+                            <p id="last-visitor" class="text-lg font-mono font-bold">🌍</p>
+                        </div>
+                        <div id="country-flag" class="text-3xl">🌍</div>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <!-- Footer -->
+    <footer class="border-t border-dark-border bg-dark-card/50 backdrop-blur-sm mt-16">
+        <div class="container mx-auto px-4 py-6">
+            <div class="flex flex-col md:flex-row items-center justify-between">
+                <div class="flex items-center space-x-2 text-sm text-gray-400">
+                    <span>Made with</span>
+                    <span class="text-red-500">❤️</span>
+                    <span>in Tunisia</span>
+                </div>
+                <div class="flex items-center space-x-4 text-sm text-gray-400 mt-4 md:mt-0">
+                    <span>Last updated: <span id="last-update">--</span></span>
+                    <span>•</span>
+                    <span>si-aziz-home.duckdns.org</span>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <script src="{{ url_for('static', filename='js/dashboard.js') }}"></script>
+</body>
+</html>
